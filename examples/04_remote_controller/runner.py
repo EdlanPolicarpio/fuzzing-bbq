@@ -18,14 +18,26 @@
 from kitty.fuzzers import ServerFuzzer
 from kitty.interfaces import WebInterface
 from katnip.targets.file import FileTarget
-from kitty.model import GraphModel
-from kitty.model import String
-from kitty.model import Template
+from kitty.model import *
+#from kitty.model import GraphModel
+#from kitty.model import String
+#from kitty.model import Template
 from kitty.remote.actor import RemoteActor
 
 
 t1 = Template(name='T1', fields=[
-        String('The default string', name='S1_1'),
+    String('GET', name='method', fuzzable=False),   # 1. Method - a string with the value "GET"
+    Delimiter(' ', name='space1', fuzzable=False),  # 1.a The space between Method and Path
+    String('/index.html', name='path'),             # 2. Path - a string with the value "/index.html"
+    Delimiter(' ', name='space2'),                  # 2.a. The space between Path and Protocol
+    String('HTTP', name='protocol name'),           # 3.a Protocol Name - a string with the value "HTTP"
+    Delimiter('/', name='fws1'),                    # 3.b The '/' after "HTTP"
+    Dword(1, name='major version',                  # 3.c Major Version - a number with the value 1
+          encoder=ENC_INT_DEC)                      # encode the major version as decimal number
+    Delimiter('.', name='dot1'),                    # 3.d The '.' between 1 and 1
+    Dword(1, name='major version',                  # 3.e Minor Version - a number with the value 1
+          encoder=ENC_INT_DEC)                      # encode the minor version as decimal number
+    Static('\r\n\r\n', name='eom')
         ])
 
 # Writes content to files
