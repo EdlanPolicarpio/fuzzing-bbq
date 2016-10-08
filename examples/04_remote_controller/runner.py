@@ -30,13 +30,8 @@ t1 = Template(name='T1', fields=[
     Delimiter(' ', name='space1', fuzzable=False),  # 1.a The space between Method and Path
     String('/index.html', name='path'),             # 2. Path - a string with the value "/index.html"
     Delimiter(' ', name='space2'),                  # 2.a. The space between Path and Protocol
-    String('HTTP', name='protocol name'),           # 3.a Protocol Name - a string with the value "HTTP"
-    Delimiter('/', name='fws1'),                    # 3.b The '/' after "HTTP"
-    Dword(1, name='major version',                  # 3.c Major Version - a number with the value 1
-          encoder=ENC_INT_DEC)                      # encode the major version as decimal number
+    String('HTTP/1.1', name='protocol'),
     Delimiter('.', name='dot1'),                    # 3.d The '.' between 1 and 1
-    Dword(1, name='major version',                  # 3.e Minor Version - a number with the value 1
-          encoder=ENC_INT_DEC)                      # encode the minor version as decimal number
     Static('\r\n\r\n', name='eom')
         ])
 
