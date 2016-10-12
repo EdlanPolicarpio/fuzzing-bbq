@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Kitty.  If not, see <http://www.gnu.org/licenses/>.
 
+from katnip.targets.tcp import TcpTarget
 from kitty.fuzzers import ServerFuzzer
 from kitty.interfaces import WebInterface
 from katnip.targets.file import FileTarget
@@ -36,12 +37,13 @@ t1 = Template(name='T1', fields=[
         ])
 
 # Writes content to files
-target = FileTarget('FileTarget', 'tmp/', 'fuzzed')
+# target = FileTarget('FileTarget', 'tmp/', 'fuzzed')
+target = TcpTarget("tcpTest", '0.0.0.0', 2001, 10, None, None)
 
 #
 # connects to actual actor (controller) over RPC
 #
-controller = RemoteActor('127.0.0.1', 25002)
+controller = RemoteActor('127.0.0.1', 25002 )
 target.set_controller(controller)
 
 model = GraphModel()
